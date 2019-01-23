@@ -8,7 +8,7 @@
 # get-archive
 - name: get-archive | dehydrated.git should be downloaded
   git:
-    dest:           "{{ dehydrated.installdir }}"
+    dest:           "{{ dehydrated.serverroot }}"
     repo:           "https://github.com/lukas2511/dehydrated.git"
     version:        "{{ dehydrated.version }}"
     clone:          "yes"
