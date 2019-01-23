@@ -9,7 +9,7 @@
 - name: make-config | config file should be deployed
   template:
     src:    "opt/dehydrated/config.j2"
-    dest:   "{{ dehydrated.serverroot }}/{{ item }}"
+    dest:   "{{ dehydrated.serverroot }}/config"
     mode:   "0644"
     backup: "yes"
 
@@ -21,9 +21,10 @@
     group:  "root"
     state:  "directory"
   with_items:
+    - "{{ dehydrated.serverroot }}/bin"
     - "{{ dehydrated.configroot }}"
     - "{{ dehydrated.configroot }}/accounts"
-    - "{{ dehydrated.tlscertdir }}"
+    - "{{ dehydrated.pkirootdir }}"
     - "{{ dehydrated.webhookdir }}"
     - "{{ dehydrated.serverroot }}/var/chains"
     - "{{ dehydrated.serverroot }}/var/log"
@@ -36,4 +37,19 @@
     backup: "yes"
   with_items:
     - "domain-names"
+
+- name: make-config | The command should be created in bin/ directory
+  file:
+    src:    "{{ dehydrated.serverroot }}/dehydrated"
+    dest:   "{{ dehydrated.serverroot }}/bin/dehydrated"
+    owner:  "root"
+    state:  "link"
+
+- name: make-config | DNS hook command should be deployed
+  template:
+    src:    "opt/dehydrated/bin/acme-dns-01-challenge.j2"
+    dest:   "{{ dehydrated.serverroot }}/bin/acme-dns-01-challenge"
+    mode:   "0754"
+    owner:  "root"
+    group:  "wheel"
 
