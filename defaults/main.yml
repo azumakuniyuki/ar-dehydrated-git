@@ -12,6 +12,5 @@ dehydrated:
   serverroot: "/opt/dehydrated"
   configroot: "/opt/dehydrated/etc"
   workingdir: "/usr/local/src"
-  tlscertdir: "/opt/dehydrated/var/ssl"
   webhookdir: "/opt/dehydrated/var/www"
-
+  pkirootdir: "/var/pki"
