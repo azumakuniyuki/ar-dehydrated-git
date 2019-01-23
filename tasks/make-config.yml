@@ -1,0 +1,39 @@
+---
+#      _      _               _           _           _  __     _ _ __  
+#   __| | ___| |__  _   _  __| |_ __ __ _| |_ ___  __| |/ /__ _(_) |\ \ 
+#  / _` |/ _ \ '_ \| | | |/ _` | '__/ _` | __/ _ \/ _` | |/ _` | | __| |
+# | (_| |  __/ | | | |_| | (_| | | | (_| | ||  __/ (_| | | (_| | | |_| |
+#  \__,_|\___|_| |_|\__, |\__,_|_|  \__,_|\__\___|\__,_| |\__, |_|\__| |
+#                   |___/                               \_\___/     /_/ 
+# make-config
+- name: make-config | config file should be deployed
+  template:
+    src:    "opt/dehydrated/config.j2"
+    dest:   "{{ dehydrated.serverroot }}/{{ item }}"
+    mode:   "0644"
+    backup: "yes"
+
+- name: make-config | Each directory should be created
+  file:
+    path:   "{{ item }}"
+    mode:   "0755"
+    owner:  "root"
+    group:  "root"
+    state:  "directory"
+  with_items:
+    - "{{ dehydrated.configroot }}"
+    - "{{ dehydrated.configroot }}/accounts"
+    - "{{ dehydrated.tlscertdir }}"
+    - "{{ dehydrated.webhookdir }}"
+    - "{{ dehydrated.serverroot }}/var/chains"
+    - "{{ dehydrated.serverroot }}/var/log"
+
+- name: make-config | Other config files should be deployed
+  template:
+    src:    "opt/dehydrated/etc/{{ item }}.j2"
+    dest:   "{{ dehydrated.configroot }}/{{ item }}"
+    mode:   "0644"
+    backup: "yes"
+  with_items:
+    - "domain-names"
+
