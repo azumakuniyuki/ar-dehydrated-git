@@ -9,12 +9,11 @@
 - block:
     - name: install-pkg | RedHat | Some packages should be installed
       yum:
-        name:  "{{ item }}"
         state: "present"
-      with_items:
-        - "git"
-        - "openssl"
-        - "openssl-devel"
-        - "openssl-libs"
+        name:
+          - "git"
+          - "openssl"
+          - "openssl-devel"
+          - "openssl-libs"
   when: ansible_os_family == "RedHat"
 
